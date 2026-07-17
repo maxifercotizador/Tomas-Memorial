@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nadia cumple 36 · ¡Estás invitad@!</title>
-<meta property="og:title" content="🎂 ¡Nadia cumple 36!">
+<title>Nani cumple 36 · ¡Estás invitad@!</title>
+<meta property="og:title" content="🎂 ¡Nani cumple 36!">
 <meta property="og:description" content="Sábado 25 de julio · 21:30 hs · Villa Luro. Entrá y confirmá tu asistencia 🎉">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://maxifercotizador.github.io/Tomas-Memorial/cumple-nadia/">
-<meta property="og:image" content="https://maxifercotizador.github.io/Tomas-Memorial/cumple-nadia/og-image.jpg?v=1">
+<meta property="og:image" content="https://maxifercotizador.github.io/Tomas-Memorial/cumple-nadia/og-image.jpg?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -152,9 +152,9 @@
 
   <p class="eyebrow">Estás invitad@ al cumple de</p>
   <div class="hero">
-    <div class="name">NADIA</div>
+    <div class="name" id="heroName">NANI</div>
     <span class="num36">36</span>
-    <p class="sub">¡Y lo festejamos a lo grande! 🥂</p>
+    <p class="sub" id="heroSub">¡Y lo festejamos a lo grande! 🥂</p>
   </div>
 
   <div class="card">
@@ -187,20 +187,14 @@
     </div>
 
     <div id="compRow" style="display:none">
-      <label for="compSel">¿Cuántas personas te acompañan?</label>
-      <select id="compSel">
-        <option value="1">1 acompañante</option>
-        <option value="2">2 acompañantes</option>
-        <option value="3">3 acompañantes</option>
-        <option value="4">4 acompañantes</option>
-        <option value="5">5 acompañantes</option>
-      </select>
+      <label for="compNum">¿Cuántas personas te acompañan? (escribí el número)</label>
+      <input type="number" id="compNum" min="1" max="10" step="1" value="1" inputmode="numeric" placeholder="Ej: 2">
     </div>
 
     <label for="guestName">Tu nombre y apellido</label>
     <input type="text" id="guestName" placeholder="Ej: Caro Fernández" autocomplete="name" maxlength="60">
 
-    <label for="guestMsg">Dejale un mensajito a Nadia (opcional)</label>
+    <label for="guestMsg" id="msgLabel">Dejale un mensajito a Nani (opcional)</label>
     <textarea id="guestMsg" placeholder="¡Feliz cumple! 🎂" maxlength="300"></textarea>
 
     <button class="primary" id="sendBtn">Confirmar asistencia</button>
@@ -234,6 +228,23 @@
     'Authorization': 'Bearer ' + SUPABASE_KEY,
     'Content-Type': 'application/json'
   };
+
+  /* ===== Config editable desde el panel de administración ===== */
+  var NOMBRE = 'Nani';
+  fetch(SUPABASE_URL + '/rest/v1/evento_config?id=eq.1&select=*', {headers:HEADERS})
+    .then(function(r){ return r.json(); })
+    .then(function(rows){
+      var c = rows && rows[0];
+      if(!c) return;
+      NOMBRE = c.nombre || NOMBRE;
+      if(location.hash !== '#estilos') document.body.setAttribute('data-theme', c.tema || THEME);
+      document.getElementById('heroName').textContent = NOMBRE.toUpperCase();
+      if(c.frase) document.getElementById('heroSub').textContent = c.frase;
+      document.getElementById('dressCodeText').textContent = c.dress_code || DRESS_CODE;
+      document.getElementById('msgLabel').textContent = 'Dejale un mensajito a ' + NOMBRE + ' (opcional)';
+      document.title = NOMBRE + ' cumple 36 · ¡Estás invitad@!';
+    })
+    .catch(function(){ /* si falla, quedan los textos por defecto */ });
 
   /* ===== Preview de estilos con #estilos ===== */
   if(location.hash === '#estilos'){
@@ -276,10 +287,10 @@
       'UID:nadia36-20260725@invitacion',
       'DTSTART:20260726T003000Z',
       'DTEND:20260726T053000Z',
-      'SUMMARY:🎂 Cumple de Nadia (36)',
+      'SUMMARY:🎂 Cumple de Nani (36)',
       'LOCATION:Av. Rivadavia 10653\\, Villa Luro\\, CABA',
-      'DESCRIPTION:¡Festejamos los 36 de Nadia!',
-      'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Mañana es el cumple de Nadia 🎉','END:VALARM',
+      'DESCRIPTION:¡Festejamos los 36 de Nani!',
+      'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Mañana es el cumple de Nani 🎉','END:VALARM',
       'END:VEVENT','END:VCALENDAR'
     ].join('\r\n');
     document.getElementById('icsBtn').href = 'data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
@@ -307,10 +318,15 @@
     err.style.display='none';
 
     if(!selectedStatus){ err.textContent='Elegí una opción arriba 👆'; err.style.display='block'; return; }
-    if(!name){ err.textContent='Poné tu nombre así Nadia sabe quién sos 😊'; err.style.display='block'; return; }
-    if(SUPABASE_URL.indexOf('PEGAR_ACA')===0){ err.textContent='Falta configurar la base de datos (SUPABASE_URL).'; err.style.display='block'; return; }
+    if(!name){ err.textContent='Poné tu nombre así '+NOMBRE+' sabe quién sos 😊'; err.style.display='block'; return; }
 
-    var companions = selectedStatus==='acompanada' ? parseInt(document.getElementById('compSel').value,10) : 0;
+    var companions = 0;
+    if(selectedStatus==='acompanada'){
+      companions = parseInt(document.getElementById('compNum').value,10);
+      if(isNaN(companions) || companions < 1 || companions > 10){
+        err.textContent='Escribí cuántas personas te acompañan (entre 1 y 10) 👯'; err.style.display='block'; return;
+      }
+    }
     btn.disabled = true; btn.textContent='Enviando...';
 
     fetch(API, {

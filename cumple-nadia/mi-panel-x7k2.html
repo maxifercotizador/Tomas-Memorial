@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel de Nadia 👑</title>
+<title>Panel de Nani 👑</title>
 <meta name="robots" content="noindex,nofollow">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -34,11 +34,22 @@
   .note a{color:#ff3d8b}
   .empty{color:#b9a8e6;text-align:center;padding:10px 0}
   .err{display:none;background:rgba(224,82,82,.12);border:1px solid #e05252;color:#ffb3b3;border-radius:12px;padding:12px;margin-top:14px;font-size:.9rem;text-align:center}
+  .flbl{display:block;font-size:.82rem;color:#b9a8e6;margin:14px 0 6px;font-weight:500}
+  .fin{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid #3d2a6b;background:transparent;color:#f3edff;font-family:'Jost',system-ui,sans-serif;font-size:1rem}
+  .fin:focus{outline:2px solid #ff3d8b;outline-offset:1px}
+  .tbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tbtn{border:1.5px solid #3d2a6b;background:transparent;color:#f3edff;border-radius:12px;padding:11px 8px;cursor:pointer;font-family:'Jost',system-ui,sans-serif;font-size:.9rem}
+  .tbtn.sel{border-color:#ff3d8b;background:rgba(255,61,139,.14);font-weight:600}
+  .savebtn{width:100%;margin-top:16px;padding:14px;border:none;border-radius:12px;background:linear-gradient(120deg,#ff3d8b,#ffb347);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Jost',system-ui,sans-serif}
+  .savebtn:disabled{opacity:.5;cursor:wait}
+  .cfgmsg{display:none;text-align:center;border-radius:12px;padding:11px;margin-top:12px;font-size:.9rem}
+  .cfgmsg.ok{display:block;border:1px solid #3dbb6e;color:#a4f0c3;background:rgba(61,187,110,.12)}
+  .cfgmsg.bad{display:block;border:1px solid #e05252;color:#ffb3b3;background:rgba(224,82,82,.12)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>Panel de Nadia 👑</h1>
+  <h1 id="panelTitle">Panel de Nani 👑</h1>
   <p class="sub">Este link es solo tuyo. A los invitados compartiles el otro (index).</p>
 
   <div class="card">
@@ -55,6 +66,28 @@
   <div class="card">
     <h2>Lista de invitados</h2>
     <div id="guestList"><p class="empty">Todavía nadie confirmó. ¡Compartí el link!</p></div>
+  </div>
+
+  <div class="card">
+    <h2>Editar invitación ✏️</h2>
+    <label class="flbl" for="cfgNombre">Nombre que se muestra en grande</label>
+    <input class="fin" type="text" id="cfgNombre" maxlength="20" placeholder="Ej: Nani">
+    <label class="flbl" for="cfgFrase">Frase de la portada</label>
+    <input class="fin" type="text" id="cfgFrase" maxlength="80" placeholder="¡Y lo festejamos a lo grande! 🥂">
+    <label class="flbl" for="cfgDress">Dress code</label>
+    <input class="fin" type="text" id="cfgDress" maxlength="80" placeholder="Vení con ganas de bailar 💃">
+    <label class="flbl">Estilo / diseño de la invitación</label>
+    <div class="tbtns">
+      <button class="tbtn" data-t="noche">🌃 Noche neón</button>
+      <button class="tbtn" data-t="elegante">✨ Elegante dorado</button>
+      <button class="tbtn" data-t="pastel">🎀 Pastel festivo</button>
+      <button class="tbtn" data-t="minimal">◻️ Minimal chic</button>
+    </div>
+    <label class="flbl" for="cfgPin">PIN de administración</label>
+    <input class="fin" type="password" id="cfgPin" inputmode="numeric" maxlength="6" placeholder="6 dígitos" autocomplete="off">
+    <button class="savebtn" id="cfgSave">Guardar cambios</button>
+    <div class="cfgmsg" id="cfgMsg"></div>
+    <p class="note" style="text-align:center">Los cambios se ven al instante en la invitación (los invitados los ven al recargar).</p>
   </div>
 </div>
 
@@ -126,6 +159,63 @@
   render();
   setInterval(render,15000);
   document.getElementById('refreshNow').addEventListener('click',function(e){ e.preventDefault(); render(); });
+
+  /* ===== Editar invitación ===== */
+  var temaSel = 'noche';
+  var tbtns = document.querySelectorAll('.tbtn');
+  function marcarTema(t){
+    temaSel = t;
+    for(var i=0;i<tbtns.length;i++) tbtns[i].classList.toggle('sel', tbtns[i].getAttribute('data-t')===t);
+  }
+  for(var b=0;b<tbtns.length;b++){
+    tbtns[b].addEventListener('click', function(){ marcarTema(this.getAttribute('data-t')); });
+  }
+
+  fetch(SUPABASE_URL + '/rest/v1/evento_config?id=eq.1&select=*', {headers:HEADERS})
+    .then(function(r){ return r.json(); })
+    .then(function(rows){
+      var c = rows && rows[0];
+      if(!c) return;
+      document.getElementById('cfgNombre').value = c.nombre || '';
+      document.getElementById('cfgFrase').value  = c.frase || '';
+      document.getElementById('cfgDress').value  = c.dress_code || '';
+      marcarTema(c.tema || 'noche');
+      document.getElementById('panelTitle').textContent = 'Panel de ' + (c.nombre || 'Nani') + ' 👑';
+      document.title = 'Panel de ' + (c.nombre || 'Nani') + ' 👑';
+    }).catch(function(){});
+
+  document.getElementById('cfgPin').value = localStorage.getItem('adminPin') || '';
+
+  document.getElementById('cfgSave').addEventListener('click', function(){
+    var btn = this, msg = document.getElementById('cfgMsg');
+    var pin = document.getElementById('cfgPin').value.trim();
+    msg.className = 'cfgmsg';
+    if(!pin){ msg.textContent = 'Poné el PIN de administración.'; msg.className = 'cfgmsg bad'; return; }
+    btn.disabled = true; btn.textContent = 'Guardando...';
+    fetch(SUPABASE_URL + '/rest/v1/rpc/actualizar_evento', {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        _pin: pin,
+        _nombre: document.getElementById('cfgNombre').value,
+        _tema: temaSel,
+        _dress: document.getElementById('cfgDress').value,
+        _frase: document.getElementById('cfgFrase').value
+      })
+    }).then(function(res){
+      if(!res.ok) throw new Error('HTTP ' + res.status);
+      localStorage.setItem('adminPin', pin);
+      var nom = document.getElementById('cfgNombre').value.trim() || 'Nani';
+      document.getElementById('panelTitle').textContent = 'Panel de ' + nom + ' 👑';
+      msg.textContent = '¡Guardado! La invitación ya muestra los cambios. ✨';
+      msg.className = 'cfgmsg ok';
+    }).catch(function(){
+      msg.textContent = 'No se pudo guardar: PIN incorrecto o problema de conexión.';
+      msg.className = 'cfgmsg bad';
+    }).finally(function(){
+      btn.disabled = false; btn.textContent = 'Guardar cambios';
+    });
+  });
 })();
 </script>
 </body>
