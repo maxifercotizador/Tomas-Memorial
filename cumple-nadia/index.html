@@ -172,6 +172,7 @@
     <div class="detail"><span class="ic">📅</span><div><b>Sábado 25 de julio</b><span>21:30 hs</span></div></div>
     <div class="detail"><span class="ic">📍</span><div><b>Av. Rivadavia 10653</b><span>Villa Luro, CABA</span></div></div>
     <div class="detail"><span class="ic">👗</span><div><b>Dress code</b><span id="dressCodeText"></span></div></div>
+    <div class="detail" id="traerRow" style="display:none"><span class="ic">🎁</span><div><b>¿Qué llevar?</b><span id="traerText"></span></div></div>
     <div class="actions">
       <a class="chipbtn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Av.+Rivadavia+10653,+Villa+Luro,+CABA,+Argentina">🗺️ Cómo llegar</a>
       <a class="chipbtn" id="icsBtn" href="#" download="cumple-nadia-36.ics">📆 Agendar</a>
@@ -241,6 +242,10 @@
       document.getElementById('heroName').textContent = NOMBRE.toUpperCase();
       if(c.frase) document.getElementById('heroSub').textContent = c.frase;
       document.getElementById('dressCodeText').textContent = c.dress_code || DRESS_CODE;
+      if(c.que_traer && c.que_traer.trim()){
+        document.getElementById('traerText').textContent = c.que_traer;
+        document.getElementById('traerRow').style.display = 'flex';
+      }
       document.getElementById('msgLabel').textContent = 'Dejale un mensajito a ' + NOMBRE + ' (opcional)';
       document.title = NOMBRE + ' cumple 36 · ¡Estás invitad@!';
     })

@@ -76,6 +76,8 @@
     <input class="fin" type="text" id="cfgFrase" maxlength="80" placeholder="¡Y lo festejamos a lo grande! 🥂">
     <label class="flbl" for="cfgDress">Dress code</label>
     <input class="fin" type="text" id="cfgDress" maxlength="80" placeholder="Vení con ganas de bailar 💃">
+    <label class="flbl" for="cfgTraer">¿Qué tienen que llevar los invitados? (dejalo vacío si no aplica)</label>
+    <input class="fin" type="text" id="cfgTraer" maxlength="120" placeholder="Ej: cada pareja una bebida 🍾">
     <label class="flbl">Estilo / diseño de la invitación</label>
     <div class="tbtns">
       <button class="tbtn" data-t="noche">🌃 Noche neón</button>
@@ -179,6 +181,7 @@
       document.getElementById('cfgNombre').value = c.nombre || '';
       document.getElementById('cfgFrase').value  = c.frase || '';
       document.getElementById('cfgDress').value  = c.dress_code || '';
+      document.getElementById('cfgTraer').value  = c.que_traer || '';
       marcarTema(c.tema || 'noche');
       document.getElementById('panelTitle').textContent = 'Panel de ' + (c.nombre || 'Nani') + ' 👑';
       document.title = 'Panel de ' + (c.nombre || 'Nani') + ' 👑';
@@ -200,7 +203,8 @@
         _nombre: document.getElementById('cfgNombre').value,
         _tema: temaSel,
         _dress: document.getElementById('cfgDress').value,
-        _frase: document.getElementById('cfgFrase').value
+        _frase: document.getElementById('cfgFrase').value,
+        _traer: document.getElementById('cfgTraer').value
       })
     }).then(function(res){
       if(!res.ok) throw new Error('HTTP ' + res.status);
