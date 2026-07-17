@@ -85,8 +85,8 @@
       <button class="tbtn" data-t="pastel">🎀 Pastel festivo</button>
       <button class="tbtn" data-t="minimal">◻️ Minimal chic</button>
     </div>
-    <label class="flbl" for="cfgPin">PIN de administración</label>
-    <input class="fin" type="password" id="cfgPin" inputmode="numeric" maxlength="6" placeholder="6 dígitos" autocomplete="off">
+    <label class="flbl" for="cfgPin">PIN de administración (se ve para que verifiques que quedó bien)</label>
+    <input class="fin" type="text" id="cfgPin" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="6 dígitos" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" name="pin-evento-x7k2" data-lpignore="true" data-1p-ignore data-form-type="other">
     <button class="savebtn" id="cfgSave">Guardar cambios</button>
     <div class="cfgmsg" id="cfgMsg"></div>
     <p class="note" style="text-align:center">Los cambios se ven al instante en la invitación (los invitados los ven al recargar).</p>
@@ -191,7 +191,7 @@
 
   document.getElementById('cfgSave').addEventListener('click', function(){
     var btn = this, msg = document.getElementById('cfgMsg');
-    var pin = document.getElementById('cfgPin').value.trim();
+    var pin = (document.getElementById('cfgPin').value || '').replace(/\D/g,'');
     msg.className = 'cfgmsg';
     if(!pin){ msg.textContent = 'Poné el PIN de administración.'; msg.className = 'cfgmsg bad'; return; }
     btn.disabled = true; btn.textContent = 'Guardando...';
