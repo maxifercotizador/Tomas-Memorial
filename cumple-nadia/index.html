@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nadia cumple 36 · ¡Estás invitad@!</title>
+<meta property="og:title" content="🎂 ¡Nadia cumple 36!">
+<meta property="og:description" content="Sábado 25 de julio · 21:30 hs · Villa Luro. Entrá y confirmá tu asistencia 🎉">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Fraunces:ital,wght@0,400;0,600;1,400&family=Baloo+2:wght@500;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --radius:18px }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;font-family:var(--body-font);
+    background:var(--bg);color:var(--text);
+    transition:background .5s ease,color .3s ease;overflow-x:hidden;
+  }
+
+  /* ============ TEMAS ============ */
+  body[data-theme="noche"]{
+    --bg: radial-gradient(1200px 800px at 80% -10%, #3b1a5e 0%, #14082b 45%, #0a0518 100%) fixed, #0a0518;
+    --card:#1c0f38; --card-border:#3d2a6b; --text:#f3edff; --muted:#b9a8e6;
+    --accent:#ff3d8b; --accent2:#ffb347; --btn-text:#fff;
+    --display-font:'Bebas Neue',Impact,sans-serif; --body-font:'Jost',system-ui,sans-serif;
+    --big-letter-spacing:.06em;
+  }
+  body[data-theme="elegante"]{
+    --bg: linear-gradient(160deg,#101010 0%,#1c1913 60%,#0d0c0a 100%) fixed, #101010;
+    --card:#1b1813; --card-border:#4a3f28; --text:#f5efe2; --muted:#b8ab8b;
+    --accent:#d4af37; --accent2:#f1e2b0; --btn-text:#141210;
+    --display-font:'Fraunces',Georgia,serif; --body-font:'Jost',system-ui,sans-serif;
+    --big-letter-spacing:.01em;
+  }
+  body[data-theme="pastel"]{
+    --bg: linear-gradient(170deg,#fff3e6 0%,#ffe0ec 50%,#e4f0ff 100%) fixed, #fff3e6;
+    --card:#ffffff; --card-border:#ffd0e2; --text:#4a3b52; --muted:#9a8aa5;
+    --accent:#ff6fa5; --accent2:#7cc4ff; --btn-text:#fff;
+    --display-font:'Baloo 2',system-ui,sans-serif; --body-font:'Jost',system-ui,sans-serif;
+    --big-letter-spacing:0;
+  }
+  body[data-theme="minimal"]{
+    --bg:#f6f5f2; --card:#ffffff; --card-border:#e3e0d8; --text:#1e1d1a; --muted:#7c786e;
+    --accent:#1e1d1a; --accent2:#c25a3a; --btn-text:#fff;
+    --display-font:'Fraunces',Georgia,serif; --body-font:'Jost',system-ui,sans-serif;
+    --big-letter-spacing:-.01em;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;padding:24px 18px 80px;position:relative;z-index:2}
+  .eyebrow{text-align:center;text-transform:uppercase;letter-spacing:.35em;font-size:.72rem;color:var(--muted);margin-bottom:14px;font-weight:500}
+  .hero{text-align:center;padding:26px 0 10px}
+  .hero .name{font-family:var(--display-font);font-size:clamp(3.4rem,16vw,6rem);line-height:.95;letter-spacing:var(--big-letter-spacing)}
+  .hero .num36{
+    font-family:var(--display-font);font-size:clamp(5rem,26vw,9.5rem);line-height:.9;display:block;
+    background:linear-gradient(120deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .sub{color:var(--muted);font-size:1.05rem;margin-top:10px;font-weight:300}
+
+  .card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:22px;margin-top:22px;box-shadow:0 8px 30px rgba(0,0,0,.12)}
+  .card h2{font-family:var(--display-font);font-size:1.5rem;margin-bottom:14px;letter-spacing:var(--big-letter-spacing)}
+
+  .detail{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--card-border)}
+  .detail:last-child{border-bottom:none}
+  .detail .ic{font-size:1.4rem;line-height:1.4}
+  .detail b{display:block;font-weight:600}
+  .detail span{color:var(--muted);font-size:.95rem}
+
+  .count{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;margin-top:6px}
+  .count .cell{background:rgba(127,127,127,.08);border:1px solid var(--card-border);border-radius:14px;padding:12px 4px}
+  .count .n{font-family:var(--display-font);font-size:2rem;display:block;color:var(--accent)}
+  .count .l{font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:var(--muted)}
+
+  .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+  .chipbtn{
+    flex:1;min-width:140px;text-align:center;text-decoration:none;
+    border:1.5px solid var(--card-border);border-radius:999px;padding:12px 14px;
+    color:var(--text);font-weight:500;font-size:.95rem;background:transparent;cursor:pointer;
+    font-family:var(--body-font);transition:transform .15s ease,border-color .2s;
+  }
+  .chipbtn:hover{transform:translateY(-2px);border-color:var(--accent)}
+
+  .rsvp-opts{display:grid;gap:12px;margin-top:6px}
+  .opt{
+    display:flex;align-items:center;gap:12px;width:100%;
+    border:2px solid var(--card-border);border-radius:16px;background:transparent;color:var(--text);
+    padding:16px 18px;font-size:1.05rem;font-weight:500;cursor:pointer;font-family:var(--body-font);text-align:left;
+    transition:border-color .2s,transform .15s ease,background .2s;
+  }
+  .opt .em{font-size:1.5rem}
+  .opt:hover{transform:translateY(-2px)}
+  .opt.selected{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+
+  label{display:block;font-size:.85rem;color:var(--muted);margin:14px 0 6px;font-weight:500}
+  input[type=text],textarea,select{
+    width:100%;padding:13px 15px;border-radius:14px;border:1.5px solid var(--card-border);
+    background:transparent;color:var(--text);font-family:var(--body-font);font-size:1rem;
+  }
+  input:focus,textarea:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+  textarea{resize:vertical;min-height:70px}
+  body[data-theme="noche"] select option, body[data-theme="elegante"] select option{background:#1c1330;color:#fff}
+
+  .primary{
+    width:100%;margin-top:18px;padding:16px;border:none;border-radius:16px;
+    background:linear-gradient(120deg,var(--accent),var(--accent2));
+    color:var(--btn-text);font-size:1.1rem;font-weight:700;cursor:pointer;
+    font-family:var(--body-font);letter-spacing:.02em;transition:transform .15s ease,filter .2s;
+  }
+  .primary:hover{transform:translateY(-2px);filter:brightness(1.08)}
+  .primary:disabled{opacity:.5;cursor:wait;transform:none}
+
+  .ok-msg{display:none;text-align:center;padding:18px;border-radius:16px;margin-top:16px;background:color-mix(in srgb,var(--accent) 14%,transparent);border:1.5px solid var(--accent);font-weight:500}
+  .err-msg{display:none;text-align:center;color:#e05252;margin-top:12px;font-size:.9rem}
+  .hint{font-size:.8rem;color:var(--muted);text-align:center;margin-top:14px}
+
+  .theme-bar{display:none;position:sticky;top:0;z-index:50;background:var(--card);border-bottom:1px solid var(--card-border);padding:10px 14px;text-align:center}
+  .theme-bar.visible{display:block}
+  .theme-bar .tlabel{font-size:.75rem;text-transform:uppercase;letter-spacing:.2em;color:var(--muted);display:block;margin-bottom:8px}
+  .theme-bar button{border:1.5px solid var(--card-border);background:transparent;color:var(--text);border-radius:999px;padding:7px 14px;margin:3px;cursor:pointer;font-family:var(--body-font);font-size:.85rem}
+  .theme-bar button.active{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,transparent);font-weight:600}
+
+  .confetti{position:fixed;top:-12px;z-index:1;pointer-events:none;border-radius:2px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.7}}
+  @media (prefers-reduced-motion: reduce){.confetti{display:none}*{transition:none!important;animation:none!important}}
+
+  .music-btn{
+    position:fixed;bottom:18px;right:18px;z-index:60;width:52px;height:52px;border-radius:50%;
+    border:1.5px solid var(--card-border);background:var(--card);color:var(--text);
+    font-size:1.3rem;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.2);
+  }
+</style>
+</head>
+<body data-theme="noche">
+
+<!-- Barra de estilos: solo visible entrando con #estilos (para elegir antes de compartir) -->
+<div class="theme-bar" id="themeBar">
+  <span class="tlabel">Vista previa de estilos (editá THEME en el código para fijarlo)</span>
+  <button data-t="noche">🌃 Noche neón</button>
+  <button data-t="elegante">✨ Elegante dorado</button>
+  <button data-t="pastel">🎀 Pastel festivo</button>
+  <button data-t="minimal">◻️ Minimal chic</button>
+</div>
+
+<div class="wrap">
+
+  <p class="eyebrow">Estás invitad@ al cumple de</p>
+  <div class="hero">
+    <div class="name">NADIA</div>
+    <span class="num36">36</span>
+    <p class="sub">¡Y lo festejamos a lo grande! 🥂</p>
+  </div>
+
+  <div class="card">
+    <h2>Cuenta regresiva</h2>
+    <div class="count">
+      <div class="cell"><span class="n" id="cd-d">–</span><span class="l">días</span></div>
+      <div class="cell"><span class="n" id="cd-h">–</span><span class="l">horas</span></div>
+      <div class="cell"><span class="n" id="cd-m">–</span><span class="l">min</span></div>
+      <div class="cell"><span class="n" id="cd-s">–</span><span class="l">seg</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Los detalles</h2>
+    <div class="detail"><span class="ic">📅</span><div><b>Sábado 25 de julio</b><span>21:30 hs</span></div></div>
+    <div class="detail"><span class="ic">📍</span><div><b>Av. Rivadavia 10653</b><span>Villa Luro, CABA</span></div></div>
+    <div class="detail"><span class="ic">👗</span><div><b>Dress code</b><span id="dressCodeText"></span></div></div>
+    <div class="actions">
+      <a class="chipbtn" target="_blank" rel="noopener" href="https://maps.google.com/?q=Av.+Rivadavia+10653,+Villa+Luro,+CABA,+Argentina">🗺️ Cómo llegar</a>
+      <a class="chipbtn" id="icsBtn" href="#" download="cumple-nadia-36.ics">📆 Agendar</a>
+    </div>
+  </div>
+
+  <div class="card" id="rsvpCard">
+    <h2>¿Venís? ¡Confirmá acá! 👇</h2>
+    <div class="rsvp-opts">
+      <button class="opt" data-status="sola"><span class="em">🙋</span> Voy sola/o</button>
+      <button class="opt" data-status="acompanada"><span class="em">👯</span> Voy acompañada/o</button>
+      <button class="opt" data-status="no"><span class="em">😢</span> No puedo ir</button>
+    </div>
+
+    <div id="compRow" style="display:none">
+      <label for="compSel">¿Cuántas personas te acompañan?</label>
+      <select id="compSel">
+        <option value="1">1 acompañante</option>
+        <option value="2">2 acompañantes</option>
+        <option value="3">3 acompañantes</option>
+        <option value="4">4 acompañantes</option>
+        <option value="5">5 acompañantes</option>
+      </select>
+    </div>
+
+    <label for="guestName">Tu nombre y apellido</label>
+    <input type="text" id="guestName" placeholder="Ej: Caro Fernández" autocomplete="name" maxlength="60">
+
+    <label for="guestMsg">Dejale un mensajito a Nadia (opcional)</label>
+    <textarea id="guestMsg" placeholder="¡Feliz cumple! 🎂" maxlength="300"></textarea>
+
+    <button class="primary" id="sendBtn">Confirmar asistencia</button>
+    <div class="ok-msg" id="okMsg"></div>
+    <div class="err-msg" id="errMsg"></div>
+    <p class="hint">¿Cambiaste de plan? Volvé a entrar, poné el mismo nombre y elegí de nuevo: vale tu última respuesta. 😉</p>
+  </div>
+
+</div>
+
+<button class="music-btn" id="musicBtn" title="Música" aria-label="Reproducir música">🎵</button>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ========= CONFIGURACIÓN (completar antes de subir) ========= */
+  var SUPABASE_URL = 'https://bssngnkagenhpejibkko.supabase.co';        // ej: https://abcd1234.supabase.co
+  var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzc25nbmthZ2VuaHBlamlia2tvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MjY3MzksImV4cCI6MjA5NDIwMjczOX0.mo4r_g1YqF1dMnviaCTXrxOjK4snAtc2ULqG4ZHqnuc';   // la "anon public" key
+  var THEME        = 'noche';                             // noche | elegante | pastel | minimal
+  var DRESS_CODE   = 'Vení con ganas de bailar 💃';
+  var EVENT_START  = new Date('2026-07-25T21:30:00-03:00');
+  /* ============================================================ */
+
+  document.body.setAttribute('data-theme', THEME);
+  document.getElementById('dressCodeText').textContent = DRESS_CODE;
+
+  var API = SUPABASE_URL + '/rest/v1/rsvps';
+  var HEADERS = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY,
+    'Content-Type': 'application/json'
+  };
+
+  /* ===== Preview de estilos con #estilos ===== */
+  if(location.hash === '#estilos'){
+    var bar = document.getElementById('themeBar');
+    bar.classList.add('visible');
+    var tb = bar.querySelectorAll('button[data-t]');
+    for(var i=0;i<tb.length;i++){
+      tb[i].addEventListener('click', function(){
+        document.body.setAttribute('data-theme', this.getAttribute('data-t'));
+        for(var k=0;k<tb.length;k++) tb[k].classList.remove('active');
+        this.classList.add('active');
+      });
+    }
+  }
+
+  /* ===== Countdown ===== */
+  function pad(n){ return n<10 ? '0'+n : ''+n; }
+  function tick(){
+    var diff = EVENT_START - new Date();
+    if(diff <= 0){
+      document.getElementById('cd-d').textContent='🎉';
+      document.getElementById('cd-h').textContent='ES';
+      document.getElementById('cd-m').textContent='HOY';
+      document.getElementById('cd-s').textContent='🎉';
+      return;
+    }
+    var s = Math.floor(diff/1000);
+    document.getElementById('cd-d').textContent = Math.floor(s/86400);
+    document.getElementById('cd-h').textContent = pad(Math.floor(s%86400/3600));
+    document.getElementById('cd-m').textContent = pad(Math.floor(s%3600/60));
+    document.getElementById('cd-s').textContent = pad(s%60);
+  }
+  tick(); setInterval(tick,1000);
+
+  /* ===== ICS ===== */
+  (function(){
+    var ics = [
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//NadiaCumple//ES',
+      'BEGIN:VEVENT',
+      'UID:nadia36-20260725@invitacion',
+      'DTSTART:20260726T003000Z',
+      'DTEND:20260726T053000Z',
+      'SUMMARY:🎂 Cumple de Nadia (36)',
+      'LOCATION:Av. Rivadavia 10653\\, Villa Luro\\, CABA',
+      'DESCRIPTION:¡Festejamos los 36 de Nadia!',
+      'BEGIN:VALARM','TRIGGER:-P1D','ACTION:DISPLAY','DESCRIPTION:Mañana es el cumple de Nadia 🎉','END:VALARM',
+      'END:VEVENT','END:VCALENDAR'
+    ].join('\r\n');
+    document.getElementById('icsBtn').href = 'data:text/calendar;charset=utf-8,'+encodeURIComponent(ics);
+  })();
+
+  /* ===== RSVP ===== */
+  var selectedStatus = null;
+  var opts = document.querySelectorAll('.opt');
+  for(var j=0;j<opts.length;j++){
+    opts[j].addEventListener('click', function(){
+      for(var k=0;k<opts.length;k++) opts[k].classList.remove('selected');
+      this.classList.add('selected');
+      selectedStatus = this.getAttribute('data-status');
+      document.getElementById('compRow').style.display = selectedStatus==='acompanada' ? 'block' : 'none';
+    });
+  }
+  function normName(n){ return n.trim().toLowerCase().replace(/\s+/g,' '); }
+
+  document.getElementById('sendBtn').addEventListener('click', function(){
+    var btn = this;
+    var name = document.getElementById('guestName').value.trim();
+    var msg  = document.getElementById('guestMsg').value.trim();
+    var err  = document.getElementById('errMsg');
+    var ok   = document.getElementById('okMsg');
+    err.style.display='none';
+
+    if(!selectedStatus){ err.textContent='Elegí una opción arriba 👆'; err.style.display='block'; return; }
+    if(!name){ err.textContent='Poné tu nombre así Nadia sabe quién sos 😊'; err.style.display='block'; return; }
+    if(SUPABASE_URL.indexOf('PEGAR_ACA')===0){ err.textContent='Falta configurar la base de datos (SUPABASE_URL).'; err.style.display='block'; return; }
+
+    var companions = selectedStatus==='acompanada' ? parseInt(document.getElementById('compSel').value,10) : 0;
+    btn.disabled = true; btn.textContent='Enviando...';
+
+    fetch(API, {
+      method:'POST',
+      headers:HEADERS,
+      body: JSON.stringify({
+        name: name,
+        name_key: normName(name),
+        status: selectedStatus,
+        companions: companions,
+        message: msg || null
+      })
+    }).then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      var totalYo = selectedStatus==='no' ? 0 : 1+companions;
+      ok.textContent = selectedStatus==='no'
+        ? '¡Gracias por avisar, '+name.split(' ')[0]+'! Te vamos a extrañar 💛'
+        : '¡Confirmadísimo, '+name.split(' ')[0]+'! Los esperamos ('+totalYo+(totalYo===1?' persona':' personas')+') 🎉';
+      ok.style.display='block';
+      ok.scrollIntoView({behavior:'smooth',block:'center'});
+      if(selectedStatus!=='no') burstConfetti(90);
+    }).catch(function(){
+      err.textContent='Ups, no se pudo guardar. Revisá tu conexión y probá de nuevo.';
+      err.style.display='block';
+    }).finally(function(){
+      btn.disabled=false; btn.textContent='Confirmar asistencia';
+    });
+  });
+
+  /* ===== Confetti ===== */
+  var confettiColors=['#ff3d8b','#ffb347','#7cc4ff','#3dbb6e','#d4af37','#ff6fa5'];
+  function burstConfetti(n){
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    for(var i=0;i<n;i++){
+      var el=document.createElement('div');
+      el.className='confetti';
+      el.style.left=(Math.random()*100)+'vw';
+      el.style.width=(6+Math.random()*7)+'px';
+      el.style.height=(8+Math.random()*10)+'px';
+      el.style.background=confettiColors[Math.floor(Math.random()*confettiColors.length)];
+      el.style.animationDuration=(2.4+Math.random()*2.2)+'s';
+      el.style.animationDelay=(Math.random()*0.8)+'s';
+      document.body.appendChild(el);
+      (function(node){ setTimeout(function(){ node.remove(); },5500); })(el);
+    }
+  }
+  setTimeout(function(){ burstConfetti(50); },600);
+
+  /* ===== Música (WebAudio) ===== */
+  var audioCtx=null, playing=false, musicTimer=null;
+  var melody=[
+    [262,.75],[262,.25],[294,1],[262,1],[349,1],[330,2],
+    [262,.75],[262,.25],[294,1],[262,1],[392,1],[349,2],
+    [262,.75],[262,.25],[523,1],[440,1],[349,1],[330,1],[294,2],
+    [466,.75],[466,.25],[440,1],[349,1],[392,1],[349,2]
+  ];
+  function playMelody(){
+    var t = audioCtx.currentTime + .1, beat = .42;
+    for(var i=0;i<melody.length;i++){
+      var o=audioCtx.createOscillator(), g=audioCtx.createGain();
+      o.type='triangle'; o.frequency.value=melody[i][0];
+      var dur=melody[i][1]*beat;
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(.18,t+.03);
+      g.gain.linearRampToValueAtTime(0,t+dur*.92);
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start(t); o.stop(t+dur);
+      t+=dur;
+    }
+    return (t - audioCtx.currentTime)*1000;
+  }
+  document.getElementById('musicBtn').addEventListener('click',function(){
+    var btn=this;
+    if(playing){
+      playing=false; clearTimeout(musicTimer);
+      if(audioCtx){ audioCtx.close(); audioCtx=null; }
+      btn.textContent='🎵'; return;
+    }
+    audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    playing=true; btn.textContent='⏸️';
+    (function loop(){
+      if(!playing||!audioCtx) return;
+      var ms=playMelody();
+      musicTimer=setTimeout(loop, ms+600);
+    })();
+  });
+
+})();
+</script>
+</body>
+</html>
