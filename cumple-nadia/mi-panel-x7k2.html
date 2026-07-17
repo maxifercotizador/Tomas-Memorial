@@ -207,14 +207,21 @@
         _traer: document.getElementById('cfgTraer').value
       })
     }).then(function(res){
-      if(!res.ok) throw new Error('HTTP ' + res.status);
-      localStorage.setItem('adminPin', pin);
-      var nom = document.getElementById('cfgNombre').value.trim() || 'Nani';
-      document.getElementById('panelTitle').textContent = 'Panel de ' + nom + ' 👑';
-      msg.textContent = '¡Guardado! La invitación ya muestra los cambios. ✨';
-      msg.className = 'cfgmsg ok';
-    }).catch(function(){
-      msg.textContent = 'No se pudo guardar: PIN incorrecto o problema de conexión.';
+      return res.text().then(function(body){
+        if(!res.ok){
+          var detalle = '';
+          try{ var j = JSON.parse(body); detalle = j.message || j.hint || body; }catch(e){ detalle = body; }
+          if((detalle||'').indexOf('PIN incorrecto') >= 0) throw new Error('El PIN no es correcto. Revisá los 6 dígitos.');
+          throw new Error('Error ' + res.status + (detalle ? ': ' + detalle : ''));
+        }
+        localStorage.setItem('adminPin', pin);
+        var nom = document.getElementById('cfgNombre').value.trim() || 'Nani';
+        document.getElementById('panelTitle').textContent = 'Panel de ' + nom + ' 👑';
+        msg.textContent = '¡Guardado! La invitación ya muestra los cambios. ✨';
+        msg.className = 'cfgmsg ok';
+      });
+    }).catch(function(e){
+      msg.textContent = 'No se pudo guardar. ' + (e && e.message ? e.message : 'Problema de conexión.');
       msg.className = 'cfgmsg bad';
     }).finally(function(){
       btn.disabled = false; btn.textContent = 'Guardar cambios';
